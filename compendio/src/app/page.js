@@ -18,6 +18,46 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false)
 
   const sendMessage = async () => {
+    setMessage('')
+    setMessages((messages) => [
+      ...messages,
+      {role: "user", content: message},
+      {role: "assistant", content: ''}
+    ])
+
+    const response = fetch('/api/chat',{
+      method:"POST",
+      headers:{
+        'Content-Type':'application/json'
+      },
+      body: JSON.stringify([...messages, {role: 'user', content: message}]),
+    }).then( async(res) => {
+      const reader = res.body.getReader()
+      const decoder = new TextDecoder()
+      
+      let result = ''
+      return reader.read().then(function processText({done, value})
+        {if(done)
+        {
+          return result
+        }
+        const text = decoder.decode(value || new Int8Array(), {stream:true})
+        setMessages((messages)=>{
+          let lastMessage = messages[messages.length -1]
+          let otherMessages = messages.slice(0, messages.length -1)
+          return([
+            ...otherMessages,
+            {
+              ...lastMessage,
+              content:lastMessage.content + text
+            }
+          ])
+
+        })
+        return reader.read().then(processText) 
+      }
+    )
+    })
     if (!message.trim() || isLoading) return;
     setIsLoading(true)
     setIsLoading(false)
@@ -48,7 +88,7 @@ export default function Home() {
 
   return (
     
-    <>
+  
 
 
     <Box
@@ -122,8 +162,43 @@ export default function Home() {
 
         </Box>
         {/* ///////////////// Left pane ends here ////////////////// */}
+        <Box
+        position={'absolute'}
+        right={0}
+        top={0}
+        height={'90vh'}
+        padding={'1em'}
+        width={'62vw'}
+        >
 
-
+        
+          <Stack
+                direction={'column'}
+                spacing={2}
+                flexGrow={1}
+                overflow={'auto'}
+                maxHeight={'100%'}
+                onChange={(e) => setMessage(e.target.value)}
+                
+                disabled={isLoading}>
+                  {messages.map((message, index) => (
+                    <Box
+                      key={index}
+                      display={'flex'}
+                      justifyContent={
+                        message.role === 'assistant' ? 'flex-start':'flex-end'
+                      }
+                    >
+                      <Box color={'#fff'} padding={'1em'} borderRadius={'2em'} bgcolor={
+                        message.role === 'assistant' ? 'primary.main' : 'secondary:main'
+                      }>
+                        {message.content}
+                      </Box>
+                    </Box>
+                  ))}
+                  <div ref={messagesEndRef} />
+                </Stack>
+            </Box>
         <Box
         position={"fixed"}
         bottom={'5vh'}
@@ -140,32 +215,10 @@ export default function Home() {
             placeholder="Hey"
             multiline
             fullWidth
+            label="message"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
             >
-              <Stack
-              direction={'column'}
-              spacing={2}
-              flexGrow={1}
-              overflow={'auto'}
-              maxHeight={'100%'}
-              onChange={(e) => setMessage(e.target.value)}
-              onKeyPress={handleKeyPress}
-              disabled={isLoading}>
-                {messages.map((message, index) => (
-                  <Box
-                    key={index}
-                    display={'flex'}
-                    justifyContent={
-                      message.role === 'assistant' ? 'flex-start':'flex-end'
-                    }
-                  >
-                    <Box bgcolor={
-                      message.role === 'assistant' ? 'primary.main' : 'secondary:main'
-                    }></Box>
-                  </Box>
-                ))}
-                <div ref={messagesEndRef} />
-              </Stack>
-
             </TextField>
           </Box>
           <Button
@@ -178,7 +231,6 @@ export default function Home() {
         </Box>
 
     </Box>
-    </>
     
   );
 }

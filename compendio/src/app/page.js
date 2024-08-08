@@ -58,12 +58,6 @@ export default function Home() {
     setIsLoading(false)
   }
 
-  const handleKeyPress = (event) => {
-    if (event.key === 'Enter' && !event.shiftKey) {
-      event.preventDefault()
-      sendMessage()
-    }
-  }
   const messagesEndRef = useRef(null)
 
   const scrollToBottom = () => {
@@ -215,13 +209,13 @@ export default function Home() {
             >
             </TextField>
           </Box>
-          <Button
-          variant="contained"
-          onClick={sendMessage}
-          disabled={isLoading}
-          >
-            {isLoading ? 'Sending...' : 'Send'}
-          </Button>
+            <Button
+            variant="contained"
+            onClick={sendMessage}
+            disabled={isLoading}
+            >
+              {isLoading ? 'Sending...' : 'Send'}
+            </Button>
         </Box>
 
     </Box>

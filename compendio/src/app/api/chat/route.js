@@ -8,7 +8,7 @@ export async function POST(req)
     const openai = new OpenAI(
         {
             baseURL: "https://openrouter.ai/api/v1",
-            apiKey: "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",
+            apiKey: process.env.OPENROUTER_API_KEY,
             
           }
     )

@@ -128,6 +128,7 @@ export default function Home() {
             backgroundColor={bgOne}
             margin={'9em auto'}
             marginBottom={'0.5em'}
+            boxShadow={' 0 0 140px 40px #786fa6'}
           >
           </Box>
           <Typography
@@ -190,7 +191,7 @@ export default function Home() {
                       }
                     >
                       <Box color={'#fff'} padding={'1em'} borderRadius={'2em'} bgcolor={
-                        message.role === 'assistant' ? 'primary.main' : 'secondary:main'
+                        message.role === 'assistant' ? '#786fa6' : '#cf6a87'
                       }>
                         {message.content}
                       </Box>

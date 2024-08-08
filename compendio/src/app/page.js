@@ -26,11 +26,6 @@ export default function Home() {
     ])
 
     const response = fetch('/api/chat',{
-      method:"POST",
-      headers:{
-        'Content-Type':'application/json'
-      },
-      body: JSON.stringify([...messages, {role: 'user', content: message}]),
     }).then( async(res) => {
       const reader = res.body.getReader()
       const decoder = new TextDecoder()
@@ -88,8 +83,6 @@ export default function Home() {
 
   return (
     
-  
-
 
     <Box
         backgroundColor={bgOne}
@@ -128,7 +121,7 @@ export default function Home() {
             backgroundColor={bgOne}
             margin={'9em auto'}
             marginBottom={'0.5em'}
-            boxShadow={' 0 0 140px 40px #786fa6'}
+            boxShadow={' 0 0 30px 1px #786fa6'}
           >
           </Box>
           <Typography

@@ -5,7 +5,13 @@ const systemPrompt = 'You are an '
 
 export async function POST(req)
 {
-    const openai = new OpenAI()
+    const openai = new OpenAI(
+        {
+            baseURL: "https://openrouter.ai/api/v1",
+            apiKey: "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",
+            
+          }
+    )
     const data = await req.json()
 
     const completion = await openai.chat.completions.create({
@@ -16,7 +22,7 @@ export async function POST(req)
             },
             ...data,
         ],
-        model: 'gpt-4o-mini',
+        model: 'meta-llama/llama-3.1-8b-instruct:free',
         stream: true,
     })
 
@@ -47,5 +53,5 @@ export async function POST(req)
         }
     })
 
-    return new NewResponse(stream)
+    return new NextResponse(stream)
 }

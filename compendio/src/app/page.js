@@ -137,12 +137,13 @@ export default function Home() {
       width={'100vw'}
       height={'100vh'}
       position={'relative'}
+      overflow={'hidden'}
     >
       {/*/////////// Left pane //////////////*/}
       <Box
         position={'absolute'}
-        width={'28vw'}
-        height={'100vh'}
+        width={{ xs: '100vw', sm: '50vw', md: '28vw' }}
+        height={{xs:'13vh',sm:'100vh', md:'100vh'}}
         top={'0'}
         left={'0'}
         backgroundColor={bgTwo}
@@ -150,22 +151,23 @@ export default function Home() {
         
         {/*///////// Menu /////////// */}
         <Box
-          position={'absolute'}
-          width={'14vw'}
-
+          position={{xs:'fixed',sm:'absolute',md:'absolute'}}
+          width={{ xs: '30vw', sm: '20vw', md: '14vw' }}
           backgroundColor={bgOne}
           borderRadius={'2em'}
-          top={'2vh'}
-          left={'7vw'}
-          padding={'1em'}
+          top={{xs:'2vh',sm:'1vh',md:'2vh'}}
+          left={{ xs: '5vw', sm: '10vw', md: '7vw' }}
+          padding={{xs:'0.1em',sm:'0.3em',md:'1em'}}
           display={'flex'}
           alignContent={'center'}
+          justifyContent={'space-around'}
         >
           <Box
-          margin={'0 2em'}
+          margin={{xs:'0',sm:'0 0.5em',md:'0 2em'}}
           onClick={lightMode}
           >
             <LightModeOutlinedIcon
+              
               sx={{ color:colorOne, transition:'0.5s', '&:hover':{
                 transform: 'scale(1.3)'
               } }}
@@ -177,7 +179,7 @@ export default function Home() {
           >|</Typography>
 
           <Box
-          margin={'0 2em'}
+          margin={{xs:'0',sm:'0 0.5em',md:'0 2em'}}
           onClick={darkMode}
           >
             <DarkModeOutlinedIcon
@@ -191,19 +193,25 @@ export default function Home() {
 
         {/* ////////////// DP placeholder ///////////////////// */}
         <Box
-          width={'200px'}
-          height={'200px'}
+          width={{ xs: '40px', md: '200px' }}
+          height={{ xs: '40px', md: '200px' }}
           borderRadius={'50%'}
           backgroundColor={bgOne}
-          margin={'9em auto'}
-          marginBottom={'0.5em'}
-          boxShadow={' 0 0 30px 1px #786fa6'}
+          position={{xs:'fixed', sm:'static',md:'static'}}
+          right={{xs:'5vw'}}
+          top={{xs:'2vh'}}
+          margin={{xs:'0', sm: '4em auto', md: '9em auto' }}
+          marginBottom={{xs:'0',sm:'0',md:'0.5em'}}
+          boxShadow={'0 0 30px 1px #786fa6'}
         >
         </Box>
         <Typography
           color={colorOne}
           textAlign={'center'}
-          fontSize={'2em'}
+          fontSize={{xs:'0.8em',sm:'1em',md:'2em'}}
+          position={{xs:'fixed',sm:'static',md:'static'}}
+          right={{xs:'3vw'}}
+          top={{xs:'9vh'}}
         >
           Hi, John Doe!
         </Typography>
@@ -214,26 +222,17 @@ export default function Home() {
         >
           Bio
         </Typography>
-        <Box
-          width={'100%'}
-          height={'35vh'}
-          position={'absolute'}
-          bottom={'0'}
-          left={'0'}
-        >
-          
-          <Stack>
-          </Stack>
-        </Box>
+        
       </Box>
       {/* ///////////////// Left pane ends here ////////////////// */}
       <Box
         position={'absolute'}
         right={0}
-        top={0}
+        top={{xs:'15vh',sm:'0',md:'0'}}
         height={'90vh'}
         padding={'1em'}
-        width={'62vw'}
+        margin={{xs:'0 0 10vh 0'}}
+        width={{ xs: '90vw', sm: '80vw', md: '62vw' }}
       >
         <Stack
           direction={'column'}
@@ -241,6 +240,7 @@ export default function Home() {
           flexGrow={1}
           overflow={'auto'}
           maxHeight={'100%'}
+          maxWidth={'100%'}
           disabled={isLoading}
         >
           {messages.map((message, index) => (
@@ -248,6 +248,7 @@ export default function Home() {
               key={index}
               display={'flex'}
               width={'95%'}
+              marginBottom={{xs:'18vh'}}
               justifyContent={
                 message.role === 'assistant' ? 'flex-start' : 'flex-end'
               }
@@ -264,19 +265,24 @@ export default function Home() {
       </Box>
       <Box
         position={"fixed"}
-        bottom={'5vh'}
+        bottom={{xs:'0',sm:'5vh',md:'5vh'}}
         right={'3vw'}
-        width={'62vw'}
+        width={{ xs: '90vw', sm: '80vw', md: '62vw' }}
         display={'flex'}
         alignContent={'center'}
+        backgroundColor={bgOne}
+        padding={'0.5em'}
+        zIndex={'10'}
       >
-        <Box width={'80%'}>
+        <Box width={'80%'}
+
+        >
           <TextField
             id="outlined-textarea"
             placeholder="Hey"
             multiline
             fullWidth
-            label="Message Compendio"
+            label="Compendio Message"
             sx={{
               '& .MuiOutlinedInput-root': {
                 color: colorOne,
@@ -287,11 +293,11 @@ export default function Home() {
                   borderColor: bgFour,
                 },
                 '&.Mui-focused fieldset': {
-                  borderColor: bgFour, 
+                  borderColor: bgFour,
                 },
               },
               '& .MuiInputLabel-root': {
-                color: colorOne, 
+                color: colorOne,
               },
             }}
             InputProps={{
@@ -301,28 +307,29 @@ export default function Home() {
             }}
             InputLabelProps={{
               sx: {
-                color: colorOne, 
+                color: colorOne,
               },
             }}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-          >
-          </TextField>
+          />
         </Box>
         <Button
           onClick={sendMessage}
           disabled={isLoading}
           sx={{
-            backgroundColor: buttonOne, 
+            backgroundColor: buttonOne,
             color: 'white',
             '&:hover': {
               backgroundColor: buttonTwo,
-              color: 'black'
-            },}}
+              color: 'black',
+            },
+          }}
         >
           {isLoading ? 'Sending...' : 'Send'}
         </Button>
       </Box>
+
     </Box>
   );
 }

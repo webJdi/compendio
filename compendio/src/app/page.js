@@ -219,6 +219,7 @@ export default function Home() {
         color={colorOne}
         textAlign={'center'}
         fontSize={'0.8em'}
+        display={{xs:'none'}}
         >
           Bio
         </Typography>
